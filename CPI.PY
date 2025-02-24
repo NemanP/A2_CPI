@@ -46,12 +46,12 @@ final_df_long = final_df.melt(id_vars=["Item", "Jurisdiction"], var_name="Month"
 
 # Ensure CPI column is numeric
 final_df_long["CPI"] = pd.to_numeric(final_df_long["CPI"])
-
+#Part2
 # Print first 12 rows
 print("First 12 rows of the transformed CPI data:")
 print(final_df_long.head(12))
 
-#part 2
+#part 3
 # Compute monthly percentage change
 final_df_long["Monthly Change"] = (
     final_df_long.groupby(["Jurisdiction", "Item"])["CPI"].pct_change() * 100
@@ -72,18 +72,18 @@ avg_monthly_change = (
 print("\nAverage Month-to-Month Change:")
 print(avg_monthly_change)
 
-#part 3
+
 # Find the province with the highest average monthly CPI change
 highest_change = avg_monthly_change.loc[avg_monthly_change.groupby("Item")["Monthly Change"].idxmax()]
-
+#part 4
 # Print result
-print("\nProvince with Highest CPI Change:")
+print("\nProvince with Highest Change:")
 print(highest_change)
-
+#part 5
 # Compute annual CPI change for Services
 services_df = final_df_long[final_df_long["Item"] == "Services"]
 
-# Pivot table for annual CPI change
+# table for annual CPI change
 services_annual_change = services_df.pivot(index="Jurisdiction", columns="Month", values="CPI")
 
 services_annual_change["Annual CPI Change (%)"] = (
@@ -92,7 +92,7 @@ services_annual_change["Annual CPI Change (%)"] = (
     ) * 100
 
 # Reset index to make it a dataframe
-#ervices_annual_change = services_annual_change[["Annual CPI Change (%)"]].reset_index()
+services_annual_change = services_annual_change[["Annual CPI Change (%)"]].reset_index()
 
 # Print annual CPI change for services
 print("\nAnnual CPI Change for Services:")
@@ -100,7 +100,6 @@ print(services_annual_change)
 
 # Find the region with the highest annual service inflation
 highest_services_inflation = services_annual_change.loc[services_annual_change["Annual CPI Change (%)"].idxmax()]
-
+#part 6
 print(f"\nRegion with the highest inflation in services: {highest_services_inflation['Jurisdiction']} ({highest_services_inflation['Annual CPI Change (%)']:.1f}%)")
-
 
